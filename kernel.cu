@@ -21,6 +21,9 @@ __global__ void VecAdd(int n, const float *A, const float *B, float* C) {
      ********************************************************************/
 
     // INSERT KERNEL CODE HERE
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    C[i] = A[i] + B[i];
+    return; 
 }
 
 
@@ -29,9 +32,12 @@ void basicVecAdd( float *A,  float *B, float *C, int n)
 
     // Initialize thread block and kernel grid dimensions ---------------------
 
-    const unsigned int BLOCK_SIZE = 512; 
+    const unsigned int BLOCK_SIZE = 256; 
 
     //INSERT CODE HERE
-
+    dim3 dimGrid((n - 1) / BLOCK_SIZE + 1, 1, 1);
+    dim3 dimBlock(BLOCK_SIZE, 1, 1);
+    VecAdd <<<dimGrid, dimBlock>>> (n, A, B, C); 
+    return ;
 }
 
