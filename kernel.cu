@@ -22,7 +22,8 @@ __global__ void VecAdd(int n, const float *A, const float *B, float* C) {
 
     // INSERT KERNEL CODE HERE
     int i = blockIdx.x * blockDim.x + threadIdx.x;
-    C[i] = A[i] + B[i];
+    if (i < n)
+        C[i] = A[i] + B[i];
     return; 
 }
 
